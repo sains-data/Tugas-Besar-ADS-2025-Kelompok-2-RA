@@ -1,0 +1,59 @@
+---
+title: "TUBES"
+author: "MUFTI MAULANA"
+date: "2025-11-20"
+output: pdf_document
+---
+
+```{r}
+library(readxl)
+library(ggplot2)
+mhs <- read_xlsx("C:/Users/Hype G12/Downloads/DATASET_TUBES.xlsx")
+head(mhs)
+
+
+p <- mhs |>
+ggplot(aes(`Apakah penerima beasiswa :`, `IPK Terakhir :`)) +
+geom_boxplot() +
+xlab("Penerima Beasiswa") +
+theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+p + geom_point(alpha = 0.5)
+
+mhs |>
+ggplot(aes(log2(`Rata-rata belajar perminggu (dalam jam) :`))) +
+geom_histogram(binwidth = 1, color = "black")
+
+#SEBARAN IPK BERDASARKAN STATUS IPK MAHASISWA
+mean_ipk <- mhs |>
+  group_by(`Apakah penerima beasiswa :`) |>
+  summarise(mean_ipk = mean(`IPK Terakhir :`, na.rm = TRUE))
+
+ggplot(mhs, aes(x = `IPK Terakhir :`)) +
+  geom_histogram(binwidth = 0.1, color = "black", fill = "skyblue") +
+  geom_vline(data = mean_ipk, 
+             aes(xintercept = mean_ipk),
+             color = "red", linewidth = 1) +
+  geom_text(
+    data = mean_ipk,
+    aes(x = mean_ipk, y = 0, label = paste0("Mean = ", round(mean_ipk, 2))),
+    color = "red",
+    vjust = -1.5,
+    fontface = "bold"
+  ) +
+  facet_wrap(~ `Apakah penerima beasiswa :`) +
+  labs(
+    title = "Sebaran IPK Berdasarkan Status Penerima Beasiswa",
+    x = "IPK Terakhir",
+    y = "Frekuensi"
+  )
+```
+
+```{r}
+anova1 <- aov(`IPK Terakhir :` ~ `Apakah penerima beasiswa :` + `Pendapatan Orangtua :` , data = mhs)
+summary(anova1)
+```
+
+```{r}
+
+```
