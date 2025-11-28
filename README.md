@@ -12,4 +12,4 @@ Penerima beasiswa di kampus itera sering kali menjadi tanda tanya bagi sebagian 
 'IPK Terakhir :', 'Apakah Penerima Beasiswa :', 'Keterlibatan Organisasi', 'Jenis Pekerjaan Ayah:', 'Jenis Pekerjaan Ibu :', dan 'Pendapatan Orangtua'.
 
 ### Metode:
-Eksplorasi Data Kategorik, Selang Kepercayaan, Uji Hipotesis 2 Populasi (t.test), dan Uji Normalitas (Shapiro Wilk test).
+Eksplorasi Data Kategorik, Selang Kepercayaan, Uji Mann Withney (non parametrik) dan Uji Normalitas (Shapiro Wilk test).
