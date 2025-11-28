@@ -1,7 +1,7 @@
 # Tugas-Besar-ADS-2025-Kelompok-2-RA
 
 ## Nama Anggota Kelompok:
-1. Ni Made Oktaviola Dharma Putri | 124450005
+1. Ni Made Oktaviola Darma Putri | 124450005
 2. Mufti Maulana | 124450011
 3. Jacinda Keysha Alvara | 124450023
 4. Hafidz Wahdiansyah |124450064
