@@ -1,0 +1,109 @@
+---
+title: "TUBES"
+author: "MUFTI MAULANA"
+date: "2025-11-20"
+output: pdf_document
+---
+
+```{r}
+library(readxl)
+library(ggplot2)
+library(dplyr)
+mhs <- read.csv("C:/Users/Hype G12/Downloads/DATASET.csv")
+
+# ============================================
+# SELANG KEPERCAYAAN PROPORSI PENERIMA BEASISWA
+# ============================================
+
+# Data
+n <- length(mhs$Apakah.penerima.beasiswa..)
+x <- sum(mhs$Apakah.penerima.beasiswa..== "Ya")
+p_hat <- x / n
+
+# Standard error
+se <- sqrt(p_hat * (1 - p_hat) / n)
+
+# z kritis untuk 95% CI
+z_crit <- qnorm(0.975)
+
+# Batas CI
+lower <- p_hat - z_crit * se
+upper <- p_hat + z_crit * se
+cat("Kita 95% percaya bahwa mahasiswa penerima beasiswa di ITERA sebanyak", round(lower,4)*100, "% sampai", round(upper,4)*100, "% \n") 
+
+
+
+# ============================================
+# BOXPLOT IPK MAHASISWA BEASISWA VS NON BEASISWA
+# ============================================
+
+p <- mhs |>
+ggplot(aes(Apakah.penerima.beasiswa.., IPK.Terakhir..)) +
+geom_boxplot() +
+labs(
+  title="IPK Mahasiswa Beasiswa vs non-Beasiswa",
+  x="Penerima Beasiswa") +
+theme(axis.text.x = element_text(angle = 90, hjust = 1))
+p + geom_point(alpha = 0.5)
+
+# ===============================================================
+# Uji Normalitas IPK Penerima dan Bukan Penerima Beaasiswa
+# ===============================================================
+# Pisahkan dua kelompok
+ipk_yes  <- mhs$IPK.Terakhir..[mhs$Apakah.penerima.beasiswa.. == "Ya"]
+ipk_no   <- mhs$IPK.Terakhir..[mhs$Apakah.penerima.beasiswa.. == "Tidak"]
+
+# Uji Shapiro-Wilk normalitas
+shapiro.test(ipk_yes)
+shapiro.test(ipk_no)
+
+# =================================================================================
+# Uji Hipotesis Apakah IPK penerima beasiswa lebih tinggi dari bukan penerima beasiswa mwnggunakan non-paramterik
+# =================================================================================
+nilai <- mhs$IPK.Terakhir..
+kelompok <- factor(mhs$Apakah.penerima.beasiswa..)
+
+data <- data.frame(nilai, kelompok)
+wilcox_result <- wilcox.test(nilai ~ kelompok, data = data)
+p_value <- wilcox_result$p.value
+print(wilcox_result)
+
+
+
+
+# ===============================================================
+# PERSENTASE PENERIMA BEASISWA TIAP KATEGORI PENDAPATAN ORANG TUA
+# ===============================================================
+
+persentase_beasiswa <- mhs |>
+  group_by(Pendapatan.Orangtua..) |>
+  mutate(total_per_kategori = n()) |>
+  filter(Apakah.penerima.beasiswa.. == "Ya") |>
+  ungroup() |>
+  group_by(Pendapatan.Orangtua..) |>
+  summarise(
+    Jumlah_Penerima = n(),
+    Total_Kategori = first(total_per_kategori),
+    Persentase_Diterima = (Jumlah_Penerima / Total_Kategori) * 100
+  ) |>
+  ungroup()
+
+# Visualisasi Bar Plot
+plot_beasiswa <- persentase_beasiswa |>
+  ggplot( aes(x = Pendapatan.Orangtua.., y = Persentase_Diterima, fill = Pendapatan.Orangtua..)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = paste0(round(Persentase_Diterima, 1), "%")), 
+            vjust = -0.5,
+            size = 4) +
+  labs(
+    title = "Persentase Penerima Beasiswa Berdasarkan Kategori Pendapatan Orang Tua",
+    x = "Kategori Pendapatan Orang Tua",
+    y = "Persentase Penerima Beasiswa",
+    fill = "Kategori Pendapatan"
+  ) +
+  theme_minimal() 
+
+# Menampilkan plot
+print(plot_beasiswa)
+
+```
