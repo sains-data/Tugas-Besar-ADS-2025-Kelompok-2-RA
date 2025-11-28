@@ -11,7 +11,7 @@
 2. Download code R pada file code codeR_2_RA.Rmd
 3. Buka script tersebut menggunakan R studio 
 4. Instal packed yang dibutuhkan ("readx1" , "ggplot2" , "dplyr")
-5. pada bagian import data : mhs <- read.csv("C:/Users/Hype G12/Downloads/DATASET.csv"), jangan lupa untuk mengganti path sesuai direktori masing
+5. pada bagian import data : mhs <- read.csv("C:/Users/Hype G12/Downloads/DATASET.csv"), jangan lupa untuk mengganti path sesuai direktori masing-masing
 6. Jalankan Script dengan cara tekan tombol Run
 
 ### Paket R yang digunakan :
